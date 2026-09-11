@@ -1,0 +1,25 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        for ch in s:
+            # 遇到左括号：入栈
+            if ch == '(' or ch == '[' or ch == '{':
+                stack.append(ch)
+            # 遇到右括号
+            else:
+                # 栈为空，说明没有左括号可以匹配
+                if not stack:
+                    return False
+                # 查看栈顶
+                top = stack[-1]
+                # 判断括号是否匹配
+                if ch == ')' and top != '(':
+                    return False
+                if ch == ']' and top != '[':
+                    return False
+                if ch == '}' and top != '{':
+                    return False
+                # 匹配成功，左括号出栈
+                stack.pop()
+        # 最后栈必须为空
+        return not stack
