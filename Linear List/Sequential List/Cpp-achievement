@@ -1,1 +1,103 @@
+#include <iostream>
+using namespace std;
 
+#define ElemType int
+#define InitSize 10        // 默认初始容量
+
+// 动态顺序表结构体
+typedef struct {
+    ElemType* data;        // 指向动态分配数组的指针
+    int length;            // 当前长度（已存元素个数）
+    int maxSize;           // 当前最大容量
+} SeqList;
+
+// ---------------- 初始化 ----------------
+void InitList(SeqList& L, int initSize = InitSize) {
+    L.data = new ElemType[initSize];   // 分配堆空间
+    L.length = 0;
+    L.maxSize = initSize;
+}
+
+// ---------------- 扩容 ----------------
+void IncreaseSize(SeqList& L, int len) {
+    ElemType* p = L.data;                       // p 暂存旧数组
+    L.data = new ElemType[L.maxSize + len];     // 申请新空间
+    for (int i = 0; i < L.length; i++)          // 拷贝有效数据
+        L.data[i] = p[i];
+    L.maxSize += len;                           // 更新容量
+    delete[] p;                                 // 释放旧空间
+}
+
+// ---------------- 销毁 ----------------
+void DestroyList(SeqList& L) {
+    if (L.data) {
+        delete[] L.data;
+        L.data = nullptr;
+    }
+    L.length = 0;
+    L.maxSize = 0;
+}
+
+// ---------------- 插入：在第 i 个位置插入 e（i 从 1 开始）----------------
+bool ListInsert(SeqList& L, int i, ElemType e) {
+    if (i < 1 || i > L.length + 1) return false;   // 位置非法
+    if (L.length >= L.maxSize)                     // 满了就扩容
+        IncreaseSize(L, 5);
+    for (int j = L.length; j >= i; j--)            // 后移
+        L.data[j] = L.data[j - 1];
+    L.data[i - 1] = e;
+    L.length++;
+    return true;
+}
+
+// ---------------- 删除：删除第 i 个元素，用 e 带回 ---------------- 
+bool ListDelete(SeqList& L, int i, ElemType& e) {
+    if (i < 1 || i > L.length) return false;
+    e = L.data[i - 1];
+    for (int j = i; j < L.length; j++)             // 前移
+        L.data[j - 1] = L.data[j];
+    L.length--;
+    return true;
+}
+
+// ---------------- 按位查找（i 从 1 开始）----------------
+ElemType GetElem(SeqList L, int i) {
+    return L.data[i - 1];      // 调用者保证 i 合法
+}
+
+// ---------------- 按值查找，返回位序（从 1 开始），找不到返回 0 --------
+int LocateElem(SeqList L, ElemType e) {
+    for (int i = 0; i < L.length; i++)
+        if (L.data[i] == e) return i + 1;
+    return 0;
+}
+
+// ---------------- 打印 ----------------
+void PrintList(SeqList L) {
+    cout << "length = " << L.length
+         << ", maxSize = " << L.maxSize << " : ";
+    for (int i = 0; i < L.length; i++)
+        cout << L.data[i] << " ";
+    cout << endl;
+}
+
+// ---------------- 测试 ----------------
+int main() {
+    SeqList L;
+    InitList(L, 3);                // 初始容量 3，方便观察扩容
+
+    for (int i = 1; i <= 6; i++)   // 插入 6 个元素 → 会触发扩容
+        ListInsert(L, i, i * 10);
+    PrintList(L);
+
+    ElemType e;
+    ListDelete(L, 2, e);           // 删除第 2 个
+    cout << "deleted: " << e << endl;
+    PrintList(L);
+
+    cout << "GetElem(3) = " << GetElem(L, 3) << endl;
+    cout << "LocateElem(40) = " << LocateElem(L, 40) << endl;
+
+    DestroyList(L);
+    return 0;
+}
