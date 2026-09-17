@@ -1,0 +1,64 @@
+class Node:
+    def __init__(self, val=0, nxt=None):
+        self.val = val
+        self.next = nxt
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = Node()  # 头结点
+        self.length = 0
+
+    def insert_head(self, val):
+        node = Node(val)
+        node.next = self.head.next
+        self.head.next = node
+        self.length += 1
+
+    def insert_tail(self, val):
+        p = self.head
+        while p.next:
+            p = p.next
+        p.next = Node(val)
+        self.length += 1
+
+    def insert(self, pos, val):
+        if pos < 1 or pos > self.length + 1:
+            return False
+        p = self.head
+        for _ in range(pos - 1):
+            p = p.next
+        node = Node(val)
+        node.next = p.next
+        p.next = node
+        self.length += 1
+        return True
+
+    def erase(self, pos):
+        if pos < 1 or pos > self.length:
+            return None
+        p = self.head
+        for _ in range(pos - 1):
+            p = p.next
+        q = p.next
+        p.next = q.next
+        self.length -= 1
+        return q.val
+
+    def reverse(self):
+        pre = None
+        cur = self.head.next
+        while cur:
+            nxt = cur.next
+            cur.next = pre
+            pre = cur
+            cur = nxt
+        self.head.next = pre
+
+    def __str__(self):
+        res = []
+        p = self.head.next
+        while p:
+            res.append(str(p.val))
+            p = p.next
+        return "[" + ", ".join(res) + "]"
