@@ -1,0 +1,35 @@
+//Core operation
+//cpp
+const int N = 10;
+int a[N];
+int t1 = -1, t2 = N;   // t1 从左边向右长，t2 从右边向左长
+
+bool full()   { return t1 + 1 == t2; }   // 相遇即满 ★最常考
+bool empty1() { return t1 == -1; }
+bool empty2() { return t2 == N; }
+
+void push1(int x) { if (full()) return; a[++t1] = x; }   // 先加后用
+void push2(int x) { if (full()) return; a[--t2] = x; }
+int  pop1()  { if (empty1()) return -1; return a[t1--]; } // 先取后减
+int  pop2()  { if (empty2()) return -1; return a[t2++]; }
+
+//py
+N = 10
+a = [None] * N
+t1, t2 = -1, N
+
+def push1(x):
+    global t1
+    if t1 + 1 == t2: print("栈满"); return
+    t1 += 1; a[t1] = x
+
+def push2(x):
+    global t2
+    if t1 + 1 == t2: print("栈满"); return
+    t2 -= 1; a[t2] = x
+
+def pop1():
+    global t1
+    if t1 == -1: return None
+    v, a[t1], t1 = a[t1], None, t1 - 1
+    return v
