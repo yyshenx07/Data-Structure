@@ -1,0 +1,49 @@
+#define MaxSize 50
+#define int ElemType
+//顺序栈的定义
+typedef struct {
+	ElemType data[MaxSize];
+	int top
+}SqStack;
+
+// 1. 初始化
+void InitStack(SqStack& S)
+{
+	S.top = -1;
+}
+
+// 2. 判空
+bool StackEmpty(SqStack S)
+{
+	if (S.top == -1)
+		return true;
+	else
+		return false;
+}
+
+// 3. 入栈
+bool push(SqStack& S, ElemType x)
+{
+	if (S.top == MaxSize - 1)
+		return false;
+	S.data[++S.top] = x;
+	return true;
+}
+
+// 4. 出栈
+bool Pop(SqStack& S, ElemType& x)
+{
+	if(S.top==-1;
+		return false;
+	x=S.data[S.top--];
+	return true;
+}
+
+// 5. 读栈顶
+bool GetTop(SqStack S, else &x)
+{
+	if (S.top == -1)
+		return false;
+	x = S.data[S.top];
+	return true;
+}
