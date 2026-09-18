@@ -1,1 +1,23 @@
+//cpp
+struct Node {
+    int data;
+    Node* next;
+    Node(int d, Node* n) : data(d), next(n) {}
+};
 
+class LinkedStack {
+    Node* top = nullptr;                       // 栈顶指针 = 链表头
+public:
+    ~LinkedStack() {                           // ★ C++ 必写：逐个释放，防内存泄漏
+        while (top) { Node* p = top; top = top->next; delete p; }
+    }
+    void push(int x) { top = new Node(x, top); }        // 头插
+    int pop() {
+        Node* p = top; int v = p->data;
+        top = top->next;                    // 先摘链
+        delete p;                           // 再释放 ★顺序不能反
+        return v;
+    }
+    int peek() const { return top->data; }
+    bool empty() const { return top == nullptr; }
+};
