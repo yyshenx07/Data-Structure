@@ -1,35 +1,46 @@
 typedef int ElemType;
 typedef struct QNode {
     ElemType data;
-    struct QNode *next;
-} QNode, *QueuePtr;
+    struct QNode* next;
+} QNode, * QueuePtr;
 
 typedef struct {
     QueuePtr front, rear;      // front 指向头结点，rear 指向表尾
 } LinkQueue;
 
-void InitQueue(LinkQueue &Q) {
+void InitQueue(LinkQueue& Q) {
     Q.front = Q.rear = new QNode;   // 建头结点
     Q.front->next = NULL;
 }
 
-bool EnQueue(LinkQueue &Q, ElemType x) {
-    QNode *s = new QNode;
+bool EnQueue(LinkQueue& Q, ElemType x) {
+    QNode* s = new QNode;
     s->data = x; s->next = NULL;
     Q.rear->next = s;          // ① 挂到表尾
     Q.rear = s;                // ② rear 后移
     return true;
 }
 
-bool DeQueue(LinkQueue &Q, ElemType &x) {
+bool DeQueue(LinkQueue& Q, ElemType& x) {
     if (Q.front == Q.rear) return false;   // 队空
-    QNode *p = Q.front->next;
+    QNode* p = Q.front->next;
     x = p->data;
     Q.front->next = p->next;               // 摘除 p
     if (Q.rear == p) Q.rear = Q.front;     // 关键特判：删的是尾结点
     delete p;
     return true;
 }
+
+void DestroyQueue(LinkQueue& Q) {
+    QNode* p = Q.front, * t;
+    while (p) {            // 从 front 开始，全部释放
+        t = p->next;
+        delete p;
+        p = t;
+    }
+    Q.front = Q.rear = NULL;   // 指针置空，防野指针
+}
+
 //STL
 #include <deque>
 std::deque<int> d;
