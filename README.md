@@ -1,1 +1,2 @@
-This is a FZU student's studying guidance
+This is a new FZU student's studying poccess
+Believe mtself,kepp!!!
