@@ -32,3 +32,22 @@ bool DeQueue(SqQueue &q, int &x) {
 int QueueLength(SqQueue q) {
     return (q.rear - q.front + MaxSize) % MaxSize;
 }
+//STL
+#include <queue>
+queue<int> q;
+q.push(1);        // 入队（队尾）
+q.pop();          // 出队（⚠️ 不返回值！先 front() 取再 pop）
+q.front();        // 队头元素
+q.back();         // 队尾元素
+q.empty();
+q.size();
+
+// 双端队列
+#include <deque>
+deque<int> dq;
+dq.push_back(1);  dq.push_front(0);
+dq.pop_back();    dq.pop_front();
+
+// 优先队列（堆，后面章节细讲）
+priority_queue<int> pq;              // 大根堆
+priority_queue<int, vector<int>, greater<int>> minpq;  // 小根堆
