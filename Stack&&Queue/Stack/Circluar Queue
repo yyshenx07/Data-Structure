@@ -1,24 +1,28 @@
-//循环队列
-#define MaxSize 6
-typedef int ElemType;
+#include <iostream>
+using namespace std;
+#define MaxSize 6          // 牺牲一个单元 → 最多存5个
 
 typedef struct {
-    ElemType data[MaxSize];
-    int front, rear;          // 队头指针、队尾指针（指向下一个空位）
+    int data[MaxSize];
+    int front, rear;       // front指向队头，rear指向队尾的下一个位置
 } SqQueue;
 
-void InitQueue(SqQueue& q) {
+void InitQueue(SqQueue &q) {
     q.front = q.rear = 0;
 }
 
-bool EnQueue(SqQueue& q, ElemType x) {
+bool QueueEmpty(SqQueue q) {
+    return q.front == q.rear;
+}
+
+bool EnQueue(SqQueue &q, int x) {
     if ((q.rear + 1) % MaxSize == q.front) return false;  // 队满
     q.data[q.rear] = x;
     q.rear = (q.rear + 1) % MaxSize;
     return true;
 }
 
-bool DeQueue(SqQueue& q, ElemType& x) {
+bool DeQueue(SqQueue &q, int &x) {
     if (q.front == q.rear) return false;                  // 队空
     x = q.data[q.front];
     q.front = (q.front + 1) % MaxSize;
